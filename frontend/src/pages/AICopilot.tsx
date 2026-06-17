@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { api } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
 import { 
-  Sparkles, FileText, Send, Link, Copy, Check, AlertCircle, Loader2, Award
+  Sparkles, Send, Copy, Check, AlertCircle, Loader2, Award
 } from 'lucide-react';
 
 export const AICopilot: React.FC = () => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { api } from '../lib/api';
 import { 
-  Edit, Trash2, Download, Filter, MapPin, DollarSign, Calendar, AlertCircle
+  Edit, Trash2, Download, Filter, MapPin, DollarSign, Calendar
 } from 'lucide-react';
 
 interface ApplicationsListProps {

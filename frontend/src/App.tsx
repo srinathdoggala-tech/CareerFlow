@@ -18,7 +18,6 @@ const AppContent: React.FC = () => {
   // Navigation & State
   const [currentView, setView] = useState('dashboard');
   const [applications, setApplications] = useState<any[]>([]);
-  const [appsLoading, setAppsLoading] = useState(false);
   
   // Search & Filter State
   const [filters, setFilters] = useState<any>({
@@ -37,14 +36,11 @@ const AppContent: React.FC = () => {
   // Load applications
   const fetchApps = async () => {
     if (!user) return;
-    setAppsLoading(true);
     try {
       const data = await api.applications.list(filters);
       setApplications(data);
     } catch (err) {
       console.error('Failed to load applications:', err);
-    } finally {
-      setAppsLoading(false);
     }
   };
 

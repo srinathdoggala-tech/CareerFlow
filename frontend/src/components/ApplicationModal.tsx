@@ -88,7 +88,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
             setPrepResources(data.interviewPrep.prepResources || '');
           }
         })
-        .catch((err) => setError('Failed to load application details.'))
+        .catch(() => setError('Failed to load application details.'))
         .finally(() => setLoading(false));
     } else {
       // Clear for new entry

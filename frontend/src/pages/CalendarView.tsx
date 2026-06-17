@@ -4,7 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { api } from '../lib/api';
-import { Calendar as CalendarIcon, Info } from 'lucide-react';
+import { Info } from 'lucide-react';
 
 interface CalendarViewProps {
   onEditApplication: (id: string) => void;

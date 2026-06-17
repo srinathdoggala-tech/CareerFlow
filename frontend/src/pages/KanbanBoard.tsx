@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { api } from '../lib/api';
 import { 
-  Plus, Calendar, DollarSign, MapPin, AlertCircle, Edit, Trash2, ArrowRight
+  Plus, Calendar, DollarSign, Edit, Trash2
 } from 'lucide-react';
 
 interface KanbanBoardProps {

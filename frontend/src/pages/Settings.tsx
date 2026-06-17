@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../lib/api';
-import { useAuth } from '../context/AuthContext';
 import { 
   Settings as SettingsIcon, Zap, FileText, Check, AlertCircle, Loader2
 } from 'lucide-react';
 
 export const Settings: React.FC = () => {
-  const { user } = useAuth();
   
   // Goals State
   const [dailyGoal, setDailyGoal] = useState('5');
