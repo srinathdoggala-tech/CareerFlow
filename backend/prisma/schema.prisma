@@ -1,0 +1,129 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum JobType {
+  INTERNSHIP
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+}
+
+enum WorkMode {
+  REMOTE
+  HYBRID
+  ONSITE
+}
+
+enum ApplicationStatus {
+  WISHLIST
+  PLANNING_TO_APPLY
+  APPLIED
+  ASSESSMENT_SCHEDULED
+  ASSESSMENT_COMPLETED
+  INTERVIEW_ROUND_1
+  INTERVIEW_ROUND_2
+  HR_ROUND
+  SELECTED
+  REJECTED
+  OFFER_RECEIVED
+  JOINED
+}
+
+enum Priority {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  passwordHash String?
+  name         String
+  provider     String        @default("local") // "local" or "google"
+  googleId     String?       @unique
+  avatarUrl    String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  applications Application[]
+  goals        Goal?
+  activities   ActivityLog[]
+}
+
+model Application {
+  id                 String            @id @default(uuid())
+  userId             String
+  user               User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName        String
+  jobTitle           String
+  jobType            JobType           @default(FULL_TIME)
+  applicationLink    String?
+  salary             Float?            // Can be monthly stipend or yearly package
+  location           String?
+  workMode           WorkMode          @default(ONSITE)
+  status             ApplicationStatus @default(WISHLIST)
+  priority           Priority          @default(MEDIUM)
+  applicationDate    DateTime          @default(now())
+  lastDateToApply    DateTime?
+  examDate           DateTime?
+  interviewDate      DateTime?
+  expectedResultDate DateTime?
+  notes              String?           @db.Text
+  
+  // Resume & outreach tracking
+  resumeVersion      String?
+  coverLetterVersion String?
+  portfolioLink      String?
+  linkedinLink       String?
+  githubLink         String?
+  
+  interviewPrep      InterviewPrep?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  @@index([userId])
+  @@index([status])
+}
+
+model InterviewPrep {
+  id                 String      @id @default(uuid())
+  applicationId      String      @unique
+  application        Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  interviewNotes     String?     @db.Text
+  technicalQuestions String?     @db.Text
+  hrQuestions        String?     @db.Text
+  feedback           String?     @db.Text
+  prepResources      String?     @db.Text
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+}
+
+model Goal {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dailyGoal    Int      @default(5)
+  weeklyGoal   Int      @default(20)
+  monthlyGoal  Int      @default(80)
+  streakCount  Int      @default(0)
+  lastApplied  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String   // e.g. "STATUS_CHANGE", "APPLICATION_CREATED"
+  details   String   @db.Text
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
